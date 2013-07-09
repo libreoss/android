@@ -6,11 +6,13 @@ Ovo je repozitorijum sa izvornim kodom LiBRE! Android aplikacije. Trenutno je u 
 
 ### Potrebne komponente
 
-* Eclipse
+* Eclipse + EGit
 * Android SDK
-* Eclipse EGit plugin
+* ActionBarSherlock
+ * http://actionbarsherlock.com/faq.html
+ * http://actionbarsherlock.com/usage.html
 
-### Importovanje projekta u Eclipse
+### Uvoz projekta u Eclipse
 
-* Klonirati Git repozitorijum ručno
-* U Eclipse-u uraditi import kao Git projekat i trebalo bi da sve bude podešeno
+* U Eclipse-u uraditi uvoz kao Git projekat
+* Ukoliko ne radi uvoz direktno sa GitHub-a, onda klonirati repozitorijum ručno, pa uraditi uvoz
