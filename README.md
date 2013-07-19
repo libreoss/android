@@ -1,6 +1,6 @@
 # LiBRE! Android aplikacija
 
-Ovo je repozitorijum sa izvornim kodom LiBRE! Android aplikacije. Trenutno je u razvoju.
+Ovo je repozitorijum sa izvornim kodom LiBRE! Android aplikacije. Aplikacija je u razvoju.
 
 ## Uputstvo za razvoj
 
