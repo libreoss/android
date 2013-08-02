@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">LiBRE! RSS vesti</string>
 
-    <string name="app_name">LiBRE!</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello LiBRE!</string>
-    <string name="title_activity_show_description">ShowDescription</string>
-
+    <!-- Action bar items -->
+    <string name="action_refresh">Refreš</string>
+    <string name="action_settings">Podešavanja</string>
+    
+    <string name="title_activity_display_message">O LiBRE! timu</string>
 </resources>

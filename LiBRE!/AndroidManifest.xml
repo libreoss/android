@@ -1,33 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.libre"
+    package="org.lugons.libre.view"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="aplha" >
 
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:icon="@drawable/libre_logo"
+        
+        android:label=""
+        android:theme="@style/Theme.MyApp.Default" >
         <activity
-            android:name="com.example.libre.MainActivity"
-            android:label="@string/app_name" >
+            android:name="GlavnaAktivnost"
+            android:label="" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
-            android:name="com.example.libre.ShowDescription"
-            android:label="@string/title_activity_show_description" >
+            android:name="org.lugons.libre.view.LibreTim"
+            android:label="@string/title_activity_display_message" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.lugons.libre.view.GlavnaAktivnost" />
         </activity>
+        <activity
+            android:name="org.lugons.libre"
+            android:label="@string/title_activity_display_message"
+            android:parentActivityName="org.lugons.libre.view.GlavnaAktivnost" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.lugons.libre.view.GlavnaAktivnost" />
+        </activity>
+        
     </application>
 
 </manifest>
