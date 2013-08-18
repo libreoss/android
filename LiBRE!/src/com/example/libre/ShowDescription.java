@@ -7,7 +7,13 @@ import android.widget.TextView;
 import android.content.Intent;
 import android.view.*;
 
-public class ShowDescription extends Activity 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuInflater;
+
+public class ShowDescription extends SherlockActivity 
 {
     public void onCreate(Bundle icicle) 
     {
@@ -55,5 +61,12 @@ public class ShowDescription extends Activity
                 finish();
             }
         });        
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getSupportMenuInflater().inflate(R.menu.show_description, menu);
+        return true;
     }
 }
