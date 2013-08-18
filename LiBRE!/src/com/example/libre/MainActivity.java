@@ -28,18 +28,36 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import android.os.AsyncTask;
 
 @SuppressWarnings("unused")
 public class MainActivity extends SherlockActivity {
+
+	private String feedUrl = "http://libre.lugons.org/index.php/category/librevesti/feed/";
+	
+	private class BackgroundDownload extends AsyncTask<Void, Void, RSSFeed>
+	{
+		protected RSSFeed doInBackground(Void... params) 
+		{
+			return getFeed(feedUrl);
+		}
+
+		protected void onPostExecute(RSSFeed result)
+		{
+			UpdateDisplay(result);
+		}
+	}
 
 	private RSSFeed getFeed(String urlToRssFeed)
 	{
 		
 		try
 		{
+			Downloader d = new Downloader(urlToRssFeed);
+
 			// setup the URL
-			URL url = new URL(urlToRssFeed);
-			
+			URL url = d.downloadToFile(getFilesDir(), "rss.xml");
+
 			// create the factory
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			// create a parser
@@ -67,7 +85,7 @@ public class MainActivity extends SherlockActivity {
 		}
 	}
 	
-    private void UpdateDisplay()
+    private void UpdateDisplay(RSSFeed feed)
     {
         TextView feedtitle = (TextView) findViewById(R.id.feedtitle);
         TextView feedpubdate = (TextView) findViewById(R.id.feedpubdate);
@@ -119,18 +137,14 @@ public class MainActivity extends SherlockActivity {
         
     }
     
-	
-	private RSSFeed feed = null;
-	String feedUrl = "http://libre.lugons.org/index.php/category/librevesti/feed/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        feed = getFeed(feedUrl);
-        
-        UpdateDisplay();
+
+	BackgroundDownload task = new BackgroundDownload();
+	task.execute();
     }
 
     
@@ -147,8 +161,8 @@ public class MainActivity extends SherlockActivity {
     	switch (item.getItemId()) 
 	{
 		case R.id.action_reload:
-			feed = getFeed(feedUrl);
-			UpdateDisplay(); 
+			BackgroundDownload task = new BackgroundDownload();
+			task.execute();
 			return true; 
 		default: 
 			return super.onOptionsItemSelected(item);
