@@ -8,22 +8,29 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuInflater;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
-import android.view.Menu;
+//import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
 @SuppressWarnings("unused")
-public class MainActivity extends Activity {
+public class MainActivity extends SherlockActivity {
 
 	private RSSFeed getFeed(String urlToRssFeed)
 	{
@@ -65,7 +72,6 @@ public class MainActivity extends Activity {
         TextView feedtitle = (TextView) findViewById(R.id.feedtitle);
         TextView feedpubdate = (TextView) findViewById(R.id.feedpubdate);
         ListView itemlist = (ListView) findViewById(R.id.itemlist);
-  
         
         if (feed == null)
         {
@@ -84,29 +90,70 @@ public class MainActivity extends Activity {
         itemlist.setAdapter(adapter);
         
         itemlist.setSelection(0);      
+	
+	// little crazy stuff xD 
+	final SherlockActivity mainActivityRef = this; 
+	final RSSFeed feedRef = feed;
+
+	itemlist.setOnItemClickListener(new OnItemClickListener() 
+	{
+		@Override 
+		public void onItemClick(AdapterView<?> parrent, View v,int index, long l) 
+		{
+			Intent descIntent = new Intent(mainActivityRef, ShowDescription.class);
+			
+			Bundle b = new Bundle();
+
+			RSSItem rssitem = feedRef.getItem(index);
+			
+			b.putString("title", rssitem.getTitle());
+			b.putString("description", rssitem.getDescription());
+			b.putString("link", rssitem.getLink());
+			b.putString("pubdate", rssitem.getPubDate());
+			descIntent.putExtra("android.intent.extra.INTENT", b);
+
+			startActivity(descIntent);
+		}
+	});
         
         
     }
     
 	
 	private RSSFeed feed = null;
+	String feedUrl = "http://libre.lugons.org/index.php/category/librevesti/feed/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        feed = getFeed("http://libre.lugons.org/index.php/category/librevesti/feed/");
+        feed = getFeed(feedUrl);
         
         UpdateDisplay();
     }
 
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getSupportMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) 
+    {
+    	switch (item.getItemId()) 
+	{
+		case R.id.action_reload:
+			feed = getFeed(feedUrl);
+			UpdateDisplay(); 
+			return true; 
+		default: 
+			return super.onOptionsItemSelected(item);
+	}
+    }
+    
     
 }
