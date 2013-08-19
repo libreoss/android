@@ -1,26 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="Android RSSReader"
-    android:id="@+id/feedtitle"
-    />
 
-<ListView
-    android:id="@+id/itemlist"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-</ListView>
 
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text=""
-    android:id="@+id/feedpubdate"
-    />    
-</LinearLayout>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+>
+
+<TabHost 
+android:id="@+id/TabHost01" 
+android:layout_width="match_parent" 
+android:layout_height="match_parent">
+	
+	<LinearLayout
+		android:layout_width="match_parent" 
+		android:layout_height="match_parent"
+		android:orientation="vertical" >
+
+	<HorizontalScrollView 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:fillViewport="true"
+		android:scrollbars="none" >
+	<TabWidget 
+		android:id="@android:id/tabs" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:layout_centerVertical="true" />
+	</HorizontalScrollView>
+
+	<FrameLayout 
+	android:id="@android:id/tabcontent" 
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content" 
+	android:paddingTop="65px">
+
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:id="@+id/tab1"
+		    >
+		<TextView  
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:text="Android RSSReader"
+		    android:id="@+id/feedtitle"
+		    />
+		<ListView
+		    android:id="@+id/itemlist"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent">
+		</ListView>
+		<TextView  
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:text=""
+		    android:id="@+id/feedpubdate"
+		    />    
+		</LinearLayout>
+
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:id="@+id/tab2"
+		    >
+		<TextView  
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:text="Last version"
+		    android:id="@+id/lasttitle"
+		    />
+		</LinearLayout>
+
+		
+	</FrameLayout>
+
+	</LinearLayout>
+
+</TabHost>
+
+</AbsoluteLayout>

@@ -27,6 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TabHost;
 
 import android.os.AsyncTask;
 
@@ -97,7 +98,7 @@ public class MainActivity extends SherlockActivity {
             return;
         }
         
-        feedtitle.setText(feed.getTitle());
+        feedtitle.setVisibility(View.GONE);
         feedpubdate.setText(feed.getPubDate());
 
         
@@ -143,6 +144,19 @@ public class MainActivity extends SherlockActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+	TabHost tabs = (TabHost)findViewById(R.id.TabHost01);
+	tabs.setup();
+
+	TabHost.TabSpec spec1 = tabs.newTabSpec("tag1");
+	spec1.setContent(R.id.tab1);
+	spec1.setIndicator("News");
+	tabs.addTab(spec1);
+
+	TabHost.TabSpec spec2 = tabs.newTabSpec("tag2");
+	spec2.setContent(R.id.tab2);
+	spec2.setIndicator("Latest");
+	tabs.addTab(spec2);
+	
 	BackgroundDownload task = new BackgroundDownload();
 	task.execute();
     }
