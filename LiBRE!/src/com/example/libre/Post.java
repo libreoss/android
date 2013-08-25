@@ -15,6 +15,7 @@ public class Post {
 	private Date 	_pubDate;
 	private Date 	_modDate;
 	private String 	_author;
+	private String	_url;
 	
 	public Post() {
 		_title	 = "Sample title";
@@ -23,6 +24,7 @@ public class Post {
 		_pubDate = new Date();
 		_modDate = new Date();
 		_author  = "Nikola Hardi";
+		_url	 = "https://libre.lugons.org";
 		
 	}
 	public Post(JSONObject json) {
@@ -61,9 +63,16 @@ public class Post {
 	public String getAuthor() {
 		return _author;
 	}
+	
+	public String getUrl() {
+		return _url;
+	}
 
 	public Comment[] getCommentsList() {
 		return _commentList;
 	}
 	
+	public String toString() {
+		return _title;
+	}
 }
