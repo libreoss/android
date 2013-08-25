@@ -1,6 +1,8 @@
 package com.example.libre;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Vector;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -35,6 +37,7 @@ import android.os.AsyncTask;
 public class MainActivity extends SherlockActivity {
 
 	private String feedUrl = "http://libre.lugons.org/index.php/category/librevesti/feed/";
+	private Post samplePost;
 	
 	private class BackgroundDownload extends AsyncTask<Void, Void, RSSFeed>
 	{
@@ -92,11 +95,13 @@ public class MainActivity extends SherlockActivity {
         TextView feedpubdate = (TextView) findViewById(R.id.feedpubdate);
         ListView itemlist = (ListView) findViewById(R.id.itemlist);
         
+        
         if (feed == null)
         {
             feedtitle.setText("No RSS Feed Available");
             return;
         }
+        
         
         feedtitle.setVisibility(View.GONE);
         feedpubdate.setText(feed.getPubDate());
@@ -113,7 +118,7 @@ public class MainActivity extends SherlockActivity {
 	// little crazy stuff xD 
 	final SherlockActivity mainActivityRef = this; 
 	final RSSFeed feedRef = feed;
-
+	
 	itemlist.setOnItemClickListener(new OnItemClickListener() 
 	{
 		@Override 
@@ -134,7 +139,54 @@ public class MainActivity extends SherlockActivity {
 			startActivity(descIntent);
 		}
 	});
+    
         
+    }
+    
+    private void UpdateDisplay()
+    {
+        TextView feedtitle = (TextView) findViewById(R.id.feedtitle);
+        TextView feedpubdate = (TextView) findViewById(R.id.feedpubdate);
+        ListView itemlist = (ListView) findViewById(R.id.itemlist);
+        List<Post> postList = new Vector<Post>(0);
+
+        
+        feedtitle.setVisibility(View.GONE);
+        feedpubdate.setText(samplePost.getPubDate().toString());
+
+        
+        ArrayAdapter<Post> adapter = new
+        ArrayAdapter<Post>(this,android.R.layout.
+        simple_list_item_1,postList);
+
+        itemlist.setAdapter(adapter);
+        
+        itemlist.setSelection(0);      
+	
+	// little crazy stuff xD 
+	final SherlockActivity mainActivityRef = this; 
+	//final RSSFeed feedRef = feed;
+
+	
+	itemlist.setOnItemClickListener(new OnItemClickListener() 
+	{
+		@Override 
+		public void onItemClick(AdapterView<?> parrent, View v,int index, long l) 
+		{
+			Intent descIntent = new Intent(mainActivityRef, ShowDescription.class);
+			
+			Bundle b = new Bundle();
+			
+			b.putString("title", samplePost.getTitle());
+			b.putString("description", samplePost.getContent());
+			//b.putString("link", rssitem.getLink());
+			b.putString("pubdate", samplePost.getPubDate().toString());
+			descIntent.putExtra("android.intent.extra.INTENT", b);
+
+			startActivity(descIntent);
+		}
+	});
+    
         
     }
     
@@ -143,7 +195,7 @@ public class MainActivity extends SherlockActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+    
 	TabHost tabs = (TabHost)findViewById(R.id.TabHost01);
 	tabs.setup();
 
@@ -156,6 +208,10 @@ public class MainActivity extends SherlockActivity {
 	spec2.setContent(R.id.tab2);
 	spec2.setIndicator("Latest");
 	tabs.addTab(spec2);
+	
+	samplePost = new Post();
+	
+	//UpdateDisplay();
 	
 	BackgroundDownload task = new BackgroundDownload();
 	task.execute();
