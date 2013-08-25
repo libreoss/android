@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.BufferedOutputStream;
 import java.util.Scanner; 
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
@@ -49,22 +50,36 @@ public class WordpressJSON
 		}
 	}
 
-	public ArrayList<Post> getLatestPosts(int count = 10) 
+	public ArrayList<Post> getLatestPosts(int count) 
 	{
 		String response = execute("get_recent_posts", "count=" + count);
-		JSONObject json = new JSONObject(response); 
-		JSONArray jsonPosts = json.getJSONArray("posts");
-		ArrayList<Post> posts = new ArrayList<Post>();
-		for (int i = 0; i<jsonPosts.length(); i++) 
-		{
-			posts.add(new Post(jsonPosts.getJSONObject(i)));
+		try {
+			JSONObject json = new JSONObject(response); 
+			JSONArray jsonPosts = json.getJSONArray("posts");
+			ArrayList<Post> posts = new ArrayList<Post>();
+			for (int i = 0; i<jsonPosts.length(); i++) 
+			{
+				posts.add(new Post(jsonPosts.getJSONObject(i)));
+			}
+			return posts;
 		}
-		return posts;
+		catch (JSONException e)
+		{
+			throw new RuntimeException(e);
+		}
+		
 	}
 
 	public Post getPostById(int id) 
 	{
-		JSONObject json = new JSONObject(execute("get_post", "id=" + id));
-		return new Post(json.getJSONObject("post"));
+		try {
+			JSONObject json = new JSONObject(execute("get_post", "id=" + id));
+			return new Post(json.getJSONObject("post"));
+		}
+		catch(JSONException e)
+		{
+			throw new RuntimeException(e);
+			
+		}
 	}	
 }
