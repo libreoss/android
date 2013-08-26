@@ -26,7 +26,6 @@ public class WordpressJSON
 	{	
 		try { 
 			URL url = new URL(urlString + "/?json=" + method);
-			//System.out.println("JSON " + url.toString());
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			conn.setChunkedStreamingMode(0);
@@ -42,7 +41,9 @@ public class WordpressJSON
 			InputStream in = new BufferedInputStream(conn.getInputStream());
 			Scanner scanner = new Scanner(in); 
 			scanner.useDelimiter("\b");
-			return scanner.next(); 
+
+			String result = scanner.next();
+			return result; 
 		}
 		catch(java.io.IOException ex) 
 		{
@@ -52,15 +53,19 @@ public class WordpressJSON
 
 	public ArrayList<Post> getLatestPosts(int count) 
 	{
-		String response = execute("get_recent_posts", "count=" + count);
+		String result = execute("get_recent_posts", "count=" + count);
+
 		try {
-			JSONObject json = new JSONObject(response); 
+			JSONObject json = new JSONObject(result);
 			JSONArray jsonPosts = json.getJSONArray("posts");
+			
 			ArrayList<Post> posts = new ArrayList<Post>();
+
 			for (int i = 0; i<jsonPosts.length(); i++) 
 			{
 				posts.add(new Post(jsonPosts.getJSONObject(i)));
 			}
+
 			return posts;
 		}
 		catch (JSONException e)
@@ -73,7 +78,8 @@ public class WordpressJSON
 	public Post getPostById(int id) 
 	{
 		try {
-			JSONObject json = new JSONObject(execute("get_post", "id=" + id));
+			String result = execute("get_post", "id=" + id);
+			JSONObject json = new JSONObject(result);
 			return new Post(json.getJSONObject("post"));
 		}
 		catch(JSONException e)

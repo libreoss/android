@@ -1,5 +1,9 @@
 package com.example.libre;
 
+import java.util.List;
+
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,27 +14,40 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockActivity;
 
 @SuppressWarnings("unused")
 public class MainActivity extends FragmentActivity {
 	ViewPager mViewPager;
     SectionsPagerAdapter mSectionsPagerAdapter;
 
-	private Post samplePost;
+	private class Task extends AsyncTask<Void, Void, List<Post>>
+	{
+		protected List<Post> doInBackground(Void... params)  
+		{
+			WordpressJSON wp = new WordpressJSON("http://libre.lugons.org");
+			return wp.getLatestPosts(10);
+		}
+		protected void onPostExecute(List<Post> result) 
+		{
+			//UpdateDisplay(result);
+		}
+	}
 	/*
-	private void UpdateDisplay() {
-		
+	private void UpdateDisplay(List<Post> postList) {
 		TextView feedtitle = (TextView) findViewById(R.id.feedtitle);
 		TextView feedpubdate = (TextView) findViewById(R.id.feedpubdate);
 		ListView itemlist = (ListView) findViewById(R.id.itemlist);
-		List<Post> postList = new Vector<Post>(0);
-
-		postList.add(samplePost);
-		postList.add(samplePost);
 
 		feedtitle.setVisibility(View.GONE);
-		feedpubdate.setText(samplePost.getPubDate().toString());
+		//feedpubdate.setText(samplePost.getPubDate().toString());
 
 		ArrayAdapter<Post> adapter = new ArrayAdapter<Post>(this,
 				android.R.layout.simple_list_item_1, postList);
@@ -39,8 +56,31 @@ public class MainActivity extends FragmentActivity {
 
 		itemlist.setSelection(0);
 
-	}
-	*/
+		//final SherlockActivity mainActivityRef = this;
+		final List<Post> postListRef = postList;
+
+		itemlist.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parrent, View v, int index,
+					long l) {
+				Intent descIntent = new Intent(mainActivityRef,
+						ShowDescription.class);
+
+				Bundle b = new Bundle();
+
+				Post samplePost = postListRef.get(index);
+				b.putString("title", samplePost.getTitle());
+				b.putString("description", samplePost.getContent());
+				b.putString("link", samplePost.getUrl());
+				b.putString("pubdate", samplePost.getPubDate().toString());
+				descIntent.putExtra("android.intent.extra.INTENT", b);
+				startActivity(descIntent);
+			}
+		});
+		
+
+	}*/
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +92,8 @@ public class MainActivity extends FragmentActivity {
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-		//samplePost = new Post();
-		//UpdateDisplay();
-
+		
+		new Task().execute();
 	}
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
