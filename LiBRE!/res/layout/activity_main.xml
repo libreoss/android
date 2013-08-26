@@ -1,76 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pager"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".MainActivity" >
 
-    <TabHost
-        android:id="@+id/TabHost01"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    <!--
+    This title strip will display the currently visible page title, as well as the page
+    titles for adjacent pages.
+    -->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
+    <android.support.v4.view.PagerTabStrip
+        android:id="@+id/pager_title_strip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="#33b5e5"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:textColor="#fff" />
 
-            <HorizontalScrollView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:fillViewport="true"
-                android:scrollbars="none" >
-
-                <TabWidget
-                    android:id="@android:id/tabs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true" />
-            </HorizontalScrollView>
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"> 
-
-                <LinearLayout
-                    android:id="@+id/tab1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/feedtitle"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Android RSSReader" />
-
-                    <ListView
-                        android:id="@+id/itemlist"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" >
-                    </ListView>
-
-                    <TextView
-                        android:id="@+id/feedpubdate"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tab2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/lasttitle"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Last version" />
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
-
-</LinearLayout>
+</android.support.v4.view.ViewPager>
