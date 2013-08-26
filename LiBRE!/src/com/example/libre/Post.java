@@ -5,6 +5,10 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date; 
+
 public class Post {
 	private Comment[] _commentList;
 	private JSONObject _json;
@@ -37,6 +41,14 @@ public class Post {
 
 			String rawPubDate = json.getString("date");
 			String rawModDate = json.getString("modified");
+			try {
+				_pubDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rawPubDate);
+				_modDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rawModDate);
+			} 
+			catch (Exception e) 
+			{
+				throw new RuntimeException(e); 
+			}
 		}
 		catch(JSONException e) {
 			throw new RuntimeException(e);

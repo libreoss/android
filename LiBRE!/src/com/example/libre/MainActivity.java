@@ -79,7 +79,7 @@ public class MainActivity extends SherlockActivity {
 				b.putString("title", samplePost.getTitle());
 				b.putString("description", samplePost.getContent());
 				b.putString("link", samplePost.getUrl());
-				//b.putString("pubdate", samplePost.getPubDate().toString());
+				b.putString("pubdate", samplePost.getPubDate().toString());
 				descIntent.putExtra("android.intent.extra.INTENT", b);
 				startActivity(descIntent);
 			}
