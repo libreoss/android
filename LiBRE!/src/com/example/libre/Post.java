@@ -28,12 +28,15 @@ public class Post {
 		
 	}
 	public Post(JSONObject json) {
-		_json = json;
-		
 		try {
-		String rawPubDate = _json.getString("date");
-		String rawModDate = _json.getString("modified");
-		String rawAuthor  = _json.getJSONObject("author").getString("slug");
+			_title = json.getString("title");
+			_id = json.getInt("id");
+			_content = json.getString("excerpt");
+			_url = json.getString("url");
+			_author = json.getJSONObject("author").getString("nickname");
+
+			String rawPubDate = json.getString("date");
+			String rawModDate = json.getString("modified");
 		}
 		catch(JSONException e) {
 			throw new RuntimeException(e);

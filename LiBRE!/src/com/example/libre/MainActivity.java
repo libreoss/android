@@ -36,19 +36,25 @@ import android.os.AsyncTask;
 @SuppressWarnings("unused")
 public class MainActivity extends SherlockActivity {
 
-	private Post samplePost;
-
-	private void UpdateDisplay() {
+	private class Task extends AsyncTask<Void, Void, List<Post>>
+	{
+		protected List<Post> doInBackground(Void... params)  
+		{
+			WordpressJSON wp = new WordpressJSON("http://libre.lugons.org");
+			return wp.getLatestPosts(10);
+		}
+		protected void onPostExecute(List<Post> result) 
+		{
+			UpdateDisplay(result);
+		}
+	}
+	private void UpdateDisplay(List<Post> postList) {
 		TextView feedtitle = (TextView) findViewById(R.id.feedtitle);
 		TextView feedpubdate = (TextView) findViewById(R.id.feedpubdate);
 		ListView itemlist = (ListView) findViewById(R.id.itemlist);
-		List<Post> postList = new Vector<Post>(0);
-
-		postList.add(samplePost);
-		postList.add(samplePost);
 
 		feedtitle.setVisibility(View.GONE);
-		feedpubdate.setText(samplePost.getPubDate().toString());
+		//feedpubdate.setText(samplePost.getPubDate().toString());
 
 		ArrayAdapter<Post> adapter = new ArrayAdapter<Post>(this,
 				android.R.layout.simple_list_item_1, postList);
@@ -58,6 +64,7 @@ public class MainActivity extends SherlockActivity {
 		itemlist.setSelection(0);
 
 		final SherlockActivity mainActivityRef = this;
+		final List<Post> postListRef = postList;
 
 		itemlist.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -68,12 +75,12 @@ public class MainActivity extends SherlockActivity {
 
 				Bundle b = new Bundle();
 
+				Post samplePost = postListRef.get(index);
 				b.putString("title", samplePost.getTitle());
 				b.putString("description", samplePost.getContent());
 				b.putString("link", samplePost.getUrl());
-				b.putString("pubdate", samplePost.getPubDate().toString());
+				//b.putString("pubdate", samplePost.getPubDate().toString());
 				descIntent.putExtra("android.intent.extra.INTENT", b);
-
 				startActivity(descIntent);
 			}
 		});
@@ -97,10 +104,8 @@ public class MainActivity extends SherlockActivity {
 		spec2.setContent(R.id.tab2);
 		spec2.setIndicator("Latest");
 		tabs.addTab(spec2);
-
-		samplePost = new Post();
-
-		UpdateDisplay();
+		
+		new Task().execute();
 
 	}
 }

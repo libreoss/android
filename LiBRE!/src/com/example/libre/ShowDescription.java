@@ -20,6 +20,7 @@ public class ShowDescription extends SherlockActivity
         super.onCreate(icicle);
         setContentView(R.layout.activity_show_description);
         
+
         String theStory = null;
 	String title = "";
         
