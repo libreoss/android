@@ -5,9 +5,7 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date; 
+import java.text.SimpleDateFormat; 
 
 public class Post {
 	private Comment[] _commentList;
@@ -20,24 +18,15 @@ public class Post {
 	private Date 	_modDate;
 	private String 	_author;
 	private String	_url;
-	
-	public Post() {
-		_title	 = "Sample title";
-		_id		 = 1;
-		_content = "Test content";
-		_pubDate = new Date();
-		_modDate = new Date();
-		_author  = "Nikola Hardi";
-		_url	 = "https://libre.lugons.org";
-		
-	}
+
 	public Post(JSONObject json) {
 		try {
 			_title = json.getString("title");
 			_id = json.getInt("id");
-			_content = json.getString("excerpt");
+			_content = json.getString("content");
 			_url = json.getString("url");
 			_author = json.getJSONObject("author").getString("nickname");
+			_json = json;
 
 			String rawPubDate = json.getString("date");
 			String rawModDate = json.getString("modified");
@@ -89,5 +78,9 @@ public class Post {
 	
 	public String toString() {
 		return _title;
+	}
+	
+	public JSONObject getJson() {
+		return _json;
 	}
 }

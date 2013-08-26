@@ -1,17 +1,14 @@
 package com.example.libre;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.content.Intent;
+import android.text.Html;
 import android.view.*;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuInflater;
 
 public class ShowDescription extends SherlockActivity 
 {
@@ -51,7 +48,7 @@ public class ShowDescription extends SherlockActivity
         TextView db= (TextView) findViewById(R.id.storybox);
 
 	titlebox.setText(title);
-        db.setText(theStory);
+        db.setText(Html.fromHtml(theStory));
         
         Button backbutton = (Button) findViewById(R.id.back);
         
