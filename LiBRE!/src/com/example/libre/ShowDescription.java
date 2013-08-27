@@ -1,10 +1,9 @@
 package com.example.libre;
 
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
+import android.webkit.WebView;
 import android.content.Intent;
-import android.text.Html;
+//import android.text.Html;
 import android.view.*;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -33,7 +32,7 @@ public class ShowDescription extends SherlockActivity
             else
             {
 	    	title = b.getString("title");
-                theStory = "\n\n" + b.getString("pubdate") 
+                theStory = "<h1>" + title + "</h1>" + "\n\n" + b.getString("pubdate") 
 				+ "\n\n" + b.getString("description").replace('\n',' ') 
 				+ "\n\nMore information:\n" + b.getString("link");
             }
@@ -44,21 +43,9 @@ public class ShowDescription extends SherlockActivity
         
         }
         
-	TextView titlebox = (TextView) findViewById(R.id.titlebox);
-        TextView db= (TextView) findViewById(R.id.storybox);
+        WebView db= (WebView) findViewById(R.id.storybox);
 
-	titlebox.setText(title);
-        db.setText(Html.fromHtml(theStory));
-        
-        Button backbutton = (Button) findViewById(R.id.back);
-        
-        backbutton.setOnClickListener(new Button.OnClickListener() 
-        {
-            public void onClick(View v) 
-            {
-                finish();
-            }
-        });        
+	db.loadDataWithBaseURL(null, theStory, "text/html", "UTF-8", null); 
     }
     
     @Override
