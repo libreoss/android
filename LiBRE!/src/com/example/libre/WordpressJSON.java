@@ -87,5 +87,19 @@ public class WordpressJSON
 			throw new RuntimeException(e);
 			
 		}
-	}	
+	}
+
+	public Post getPageBySlug(String slug) 
+	{	
+		try {
+			String result = execute("get_page", "slug=" + slug);
+			JSONObject json = new JSONObject(result);
+			return new Post(json.getJSONObject("page"));
+		}
+		catch(JSONException e)
+		{
+			throw new RuntimeException(e);
+			
+		}
+	}
 }

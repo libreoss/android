@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.webkit.WebView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,12 +21,16 @@ public class Page extends Fragment {
 	public static final String ARG_SECTION_NUMBER = "section_number";
 
 	ListView itemlist;
+	WebView membersView; 
+
+	Post membersPage; 
 
 	private class Task extends AsyncTask<Void, Void, List<Post>>
 	{
 		protected List<Post> doInBackground(Void... params)  
 		{
 			WordpressJSON wp = new WordpressJSON("http://libre.lugons.org");
+			membersPage = wp.getPageBySlug("libre-tim");
 			return wp.getLatestPosts(10);
 		}
 		protected void onPostExecute(List<Post> result) 
@@ -63,6 +68,8 @@ public class Page extends Fragment {
 				startActivity(descIntent);
 			}
 		});
+
+		membersView.loadDataWithBaseURL(null, membersPage.getContent(), "text/html", "UTF-8", null);
 	}
 		
 	public Page() {
@@ -71,13 +78,14 @@ public class Page extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		int i = getArguments().getInt(ARG_SECTION_NUMBER);
+		itemlist = new ListView((Context) getActivity());
+		membersView = new WebView((Context) getActivity());
+		Task t = new Task();
+		t.execute();
 		switch (i) 
 		{
-			case 0: 
-				itemlist = new ListView((Context) getActivity());
-				Task t = new Task(); 
-				t.execute();
-				return itemlist;
+			case 0: return itemlist;
+			case 2: return membersView; 
 			default: return new View((Context) getActivity());
 		}
 	}
