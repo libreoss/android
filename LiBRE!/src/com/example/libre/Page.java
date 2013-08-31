@@ -23,32 +23,27 @@ public class Page extends Fragment {
 	ListView itemlist;
 	WebView membersView; 
 
-	Post membersPage; 
-
-	private class Task extends AsyncTask<Void, Void, List<Post>>
-	{
-		protected List<Post> doInBackground(Void... params)  
-		{
-			WordpressJSON wp = new WordpressJSON("http://libre.lugons.org");
-			membersPage = wp.getPageBySlug("libre-tim");
-			return wp.getLatestPosts(10);
-		}
-		protected void onPostExecute(List<Post> result) 
-		{
-			UpdateDisplay(result);
-		}
-	}
+	List<Post> posts;
+	Post membersPage;
 	
-	private void UpdateDisplay(List<Post> postList) {
-		ArrayAdapter<Post> adapter = new ArrayAdapter<Post>(getActivity(),
-				android.R.layout.simple_list_item_1, postList);
+	public Page(List<Post> _posts, Post _membersPage) {
+		posts = _posts; 
+		membersPage = _membersPage;
+	}
 
+	private void UpdateDisplay() {
+		itemlist = new ListView((Context) getActivity());
+		membersView = new WebView((Context) getActivity());
+		
+		ArrayAdapter<Post> adapter = new ArrayAdapter<Post>(getActivity(),
+				android.R.layout.simple_list_item_1, posts);
+		
 		itemlist.setAdapter(adapter);
 
 		itemlist.setSelection(0);
 
 		final android.support.v4.app.FragmentActivity mainActivityRef = getActivity();
-		final List<Post> postListRef = postList;
+		final List<Post> postsRef = posts;
 
 		itemlist.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -59,7 +54,7 @@ public class Page extends Fragment {
 
 				Bundle b = new Bundle();
 
-				Post samplePost = postListRef.get(index);
+				Post samplePost = postsRef.get(index);
 				b.putString("title", samplePost.getTitle());
 				b.putString("description", samplePost.getContent());
 				b.putString("link", samplePost.getUrl());
@@ -72,16 +67,11 @@ public class Page extends Fragment {
 		membersView.loadDataWithBaseURL(null, membersPage.getContent(), "text/html", "UTF-8", null);
 	}
 		
-	public Page() {
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		int i = getArguments().getInt(ARG_SECTION_NUMBER);
-		itemlist = new ListView((Context) getActivity());
-		membersView = new WebView((Context) getActivity());
-		Task t = new Task();
-		t.execute();
+		UpdateDisplay(); 
 		switch (i) 
 		{
 			case 0: return itemlist;
