@@ -12,10 +12,6 @@ Ovo je repozitorijum sa izvornim kodom LiBRE! Android aplikacije. Aplikacija je 
  * http://actionbarsherlock.com/faq.html
  * http://actionbarsherlock.com/usage.html
 
-### Uvoz projekta u Eclipse
-
-Potrebno je u Eclipse-u uraditi uvoz kao Git projekat. Ukoliko ne radi uvoz direktno sa GitHub-a, onda klonirati repozitorijum ručno, pa uraditi uvoz.
-
 ### Razvoj pomoću komandne linije
 
 * Ažuriranje projekta:
