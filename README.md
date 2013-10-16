@@ -6,11 +6,9 @@ Ovo je repozitorijum sa izvornim kodom LiBRE! Android aplikacije. Aplikacija je 
 
 ### Razvojne komponente
 
-* Eclipse + EGit
-* Android SDK
-* ActionBarSherlock
- * http://actionbarsherlock.com/faq.html
- * http://actionbarsherlock.com/usage.html
+* [Eclipse](http://www.eclipse.org/) + [EGit](http://www.eclipse.org/egit/)
+* [Android SDK](http://developer.android.com/sdk)
+* [ActionBarSherlock](http://actionbarsherlock.com)
 
 ### Razvoj pomoću komandne linije
 
