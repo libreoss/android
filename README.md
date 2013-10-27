@@ -8,7 +8,7 @@ Licencirano pod uslovima GPL v3 licence.
 
 ### Razvojne komponente
 
-* [Eclipse](http://www.eclipse.org/) + [EGit](http://www.eclipse.org/egit/)
+* [Eclipse](http://www.eclipse.org/) i [EGit](http://www.eclipse.org/egit/)
 * [Android SDK](http://developer.android.com/sdk)
 * [ActionBarSherlock](http://actionbarsherlock.com)
 
