@@ -2,7 +2,7 @@
 
 Ovo je repozitorijum sa izvornim kodom LiBRE! Android aplikacije. Aplikacija je u razvoju.
 
-Licencirano pod uslovima GPL v3 licence.
+Licencirano pod GPL v3 licencom.
 
 ## Uputstvo za razvoj
 
