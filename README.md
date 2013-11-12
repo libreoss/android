@@ -14,8 +14,8 @@ Licencirano pod GPL v3 licencom.
 
 ### Razvoj pomoću komandne linije
 
-* Ažuriranje projekta:
+* Ažuriranje:
   * `$ android update project --target=android-18 --path . --library=/putanja/do/abs/biblioteke`
   * `--library` opcija zahteva putanju u odnosu na putanju projekta (npr. ako je projekat u `/data/libre`, a ABS u `/data/abs` treba zadati putanju `../abs/`)
-* Kompajliranje projekta: `$ ant debug`
-* Instaliranje na uređaj ili simulator: `$ adb -d install -r bin/MainActivity-debug.apk`
+* Kompajliranje: `$ ant debug`
+* Instaliranje: `$ adb -d install -r bin/MainActivity-debug.apk`
