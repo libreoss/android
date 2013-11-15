@@ -1,112 +1,87 @@
 package com.example.libre;
 
-import java.net.URL;
+import java.util.List;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-
-import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.util.Log;
-import android.view.Menu;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockActivity;
 
 @SuppressWarnings("unused")
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
+	ViewPager mViewPager;
+	SectionsPagerAdapter mSectionsPagerAdapter;
 
-	private RSSFeed getFeed(String urlToRssFeed)
-	{
+	List<Post> posts; 
+	Post membersPage;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 		
-		try
-		{
-			// setup the URL
-			URL url = new URL(urlToRssFeed);
-			
-			// create the factory
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			// create a parser
-			SAXParser parser = factory.newSAXParser();
-			
-			// create the reader (scanner)
-			XMLReader xmlreader = parser.getXMLReader();
-			// instantiate our handler
-			RSSHandler theRssHandler = new RSSHandler();
-			// assign our handler
-			xmlreader.setContentHandler(theRssHandler);
-
-			// get our data through the URL class
-			InputSource is = new InputSource(url.openStream());
-			// perform the synchronous parse           
-			xmlreader.parse(is);
-			// get the results - should be a fully populated RSSFeed instance, 
-			// or null on error
-			return theRssHandler.getFeed();
-		}
-		catch (Exception ee)
-		{
-			// if you have a problem, simply return null
-			return null;
-		}
+		Task t = new Task(this); 
+		t.execute();	
 	}
+
+	void UpdateDisplay(List<Post> _posts, Post _membersPage) 
+	{
+		posts = _posts; 
+		membersPage = _membersPage;
+		
+        	mSectionsPagerAdapter = new SectionsPagerAdapter(
+        	getSupportFragmentManager());
 	
-    private void UpdateDisplay()
-    {
-        TextView feedtitle = (TextView) findViewById(R.id.feedtitle);
-        TextView feedpubdate = (TextView) findViewById(R.id.feedpubdate);
-        ListView itemlist = (ListView) findViewById(R.id.itemlist);
-  
-        
-        if (feed == null)
-        {
-            feedtitle.setText("No RSS Feed Available");
-            return;
-        }
-        
-        feedtitle.setText(feed.getTitle());
-        feedpubdate.setText(feed.getPubDate());
+	        mViewPager = (ViewPager) findViewById(R.id.pager);
+	        mViewPager.setAdapter(mSectionsPagerAdapter);
+	}
+	private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        	public SectionsPagerAdapter(FragmentManager fm) {
+        	    super(fm);
+        	}
         
-        ArrayAdapter<RSSItem> adapter = new
-        ArrayAdapter<RSSItem>(this,android.R.layout.
-        simple_list_item_1,feed.getAllItems());
+		@Override
+        	public Fragment getItem(int position) {
+        	    Fragment fragment = new Page(posts, membersPage);
+        	    Bundle args = new Bundle();
+        	    args.putInt(Page.ARG_SECTION_NUMBER, position);
+        	    fragment.setArguments(args);
+        	    return fragment;
+        	}
 
-        itemlist.setAdapter(adapter);
-        
-        itemlist.setSelection(0);      
-        
-        
-    }
-    
+        	@Override
+        	public int getCount() {
+        	    return 3;
+        	}
 	
-	private RSSFeed feed = null;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        
-        feed = getFeed("http://libre.lugons.org/index.php/category/librevesti/feed/");
-        
-        UpdateDisplay();
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-    
+	        @Override
+	        public CharSequence getPageTitle(int position) {
+	            switch (position) {
+	            case 0:
+	                return getString(R.string.title_section1).toUpperCase();
+	            case 1:
+	                return getString(R.string.title_section2).toUpperCase();
+	            case 2:
+	                return getString(R.string.title_section3).toUpperCase();
+	            }
+	            return null;
+	        }
+	}	
 }
